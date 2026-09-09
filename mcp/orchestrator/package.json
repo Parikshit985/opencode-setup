@@ -1,0 +1,10 @@
+{
+  "name": "opencode-orchestrator-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local MCP server exposing the opencode orchestration platform: telemetry, memory, config, headless runs.",
+  "main": "index.js",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  }
+}

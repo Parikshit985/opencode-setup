@@ -1,0 +1,16 @@
+# deps
+node_modules/
+# opencode runtime (auto-created, never commit)
+telemetry/
+logs/
+*.log
+# local secrets / env
+.env
+# vault + memory are personal, never commit
+memory/
+# OS noise
+.DS_Store
+Thumbs.db
+# editor
+.vscode/
+.idea/

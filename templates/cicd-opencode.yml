@@ -1,0 +1,44 @@
+# CI/CD template: run opencode agents headless in GitHub Actions.
+# Copy into a repo as .github/workflows/opencode.yml and adapt.
+# The CICD agent (/ship) drops this in and wires secrets.
+name: opencode-agent
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "Task for the agent"
+        required: false
+        default: "Run the test suite, fix any failures, and report."
+
+jobs:
+  agent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install opencode
+        run: npm i -g opencode-ai
+
+      - name: Run agent headless
+        env:
+          # Add the provider keys your agents use as repo/org secrets.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          opencode run --agent qa "Run the full test suite. Fix bugs you find. \
+          Add regression tests. Report. Task: ${{ github.event.inputs.task }}"
+
+      - name: Upload agent output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opencode-output
+          path: .
+          include-hidden-files: true

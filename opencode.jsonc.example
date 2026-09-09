@@ -1,0 +1,54 @@
+{
+  // Portable opencode config template.
+  // Install: scripts/install.ps1 (Win) or scripts/install.sh (Mac) copies this to
+  //   ~/.config/opencode/opencode.jsonc and replaces <VAULT_PATH> / <HOME> / <OBSIDIAN_EXE>.
+  // Manual install: copy this file to ~/.config/opencode/opencode.jsonc, then
+  //   replace every <VAULT_PATH>, <HOME>, <OBSIDIAN_EXE> placeholder below.
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "team",
+  "plugin": [
+    // Obsidian memory is via PLUGIN (not an mcp block) -- preserve this shape.
+    // Pick ONE cliPath line for your OS:
+    [
+      "opencode-obsidian",
+      {
+        "vaultPath": "<VAULT_PATH>",
+        // Windows (default): wrapper strips Obsidian 1.9.12 installer noise lines.
+        "cliPath": "<HOME>/.config/opencode/mcp/obsidian-cli.cmd"
+        // Mac/Linux: use the sh shim instead (comment the line above, uncomment below).
+        // "cliPath": "<HOME>/.config/opencode/mcp/obsidian-cli.sh"
+      }
+    ],
+    "./plugin/orchestrator.ts",
+    "./plugin/pixel-agents.ts"
+  ],
+  "mcp": {
+    "orchestrator": {
+      "type": "local",
+      // Relative to the config dir (~/.config/opencode). If your opencode build
+      // requires absolute paths, replace with "<HOME>/.config/opencode/mcp/orchestrator/index.js".
+      "command": ["node", "./mcp/orchestrator/index.js"],
+      "enabled": true
+    },
+    // OPTIONAL: MiroFish prediction engine. Requires the MiroFish backend
+    // (see mcp/mirofish/README.md + .env.example). Set "enabled": false or
+    // delete this block if you don't use /mirofish + /research.
+    "mirofish": {
+      "type": "local",
+      "command": ["node", "./mcp/mirofish/index.js"],
+      "enabled": true
+    }
+  },
+  "permission": {
+    "doom_loop": "ask",
+    "bash": {
+      "opencode run *": "allow",
+      "git push *": "ask",
+      "*": "ask"
+    }
+  },
+  "tool_output": {
+    "max_lines": 200,
+    "max_bytes": 8192
+  }
+}

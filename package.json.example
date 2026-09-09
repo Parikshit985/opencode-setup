@@ -1,0 +1,10 @@
+{
+  "name": "opencode-setup",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Portable opencode setup: team agents, commands, skills, orchestrator + obsidian MCP wiring.",
+  "dependencies": {
+    "@opencode-ai/plugin": "1.18.21",
+    "opencode-obsidian": "latest"
+  }
+}
